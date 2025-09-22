@@ -6,4 +6,3 @@ O sistema permite cadastrar clientes, produtos e gerenciar lances em leilões.
 ## Tecnologias utilizadas
 - Java
 - MySQL
-- Git/GitHub
