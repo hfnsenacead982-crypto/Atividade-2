@@ -1,3 +1,6 @@
+
+import javax.swing.JOptionPane;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -141,16 +144,32 @@ public class cadastroVIEW extends javax.swing.JFrame {
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
         ProdutosDTO produto = new ProdutosDTO();
-        String nome = cadastroNome.getText();
-        String valor = cadastroValor.getText();
-        String status = "A Venda";
+    String nome = cadastroNome.getText();
+    String valor = cadastroValor.getText();
+    String status = "A Venda";
+    
+    try {
+        int valorInt = Integer.parseInt(valor);
         produto.setNome(nome);
-        produto.setValor(Integer.parseInt(valor));
+        produto.setValor(valorInt);
         produto.setStatus(status);
         
         ProdutosDAO produtodao = new ProdutosDAO();
-        produtodao.cadastrarProduto(produto);
+        boolean cadastrado = produtodao.cadastrarProduto(produto);
         
+        if (cadastrado) {
+            JOptionPane.showMessageDialog(null, "Cadastro realizado com sucesso!");
+            cadastroNome.setText("");
+            cadastroValor.setText("");
+        } else {
+            JOptionPane.showMessageDialog(null, "Erro ao cadastrar o produto. Pode ser problema de conexão com o banco ou dados inválidos.");
+        }
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(null, "O valor deve ser um número inteiro válido.");
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Erro inesperado ao cadastrar o produto.");
+    }
+  
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
     private void btnProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProdutosActionPerformed

@@ -15,29 +15,33 @@ public class ProdutosDAO {
     ResultSet resultset;
     ArrayList<ProdutosDTO> listagem = new ArrayList<>();
     
-    public void cadastrarProduto (ProdutosDTO produto){
-        conn = new conectaDAO().connectDB();
-String sql = "INSERT INTO produtos (nome, valor, status) VALUES (?,?,?)";
+    public boolean cadastrarProduto (ProdutosDTO produto) {
+    conn = new conectaDAO().connectDB();
+    
+    String sql = "INSERT INTO produtos (nome, valor, status) VALUES (?,?,?)";
+    boolean sucesso = false;
 
-try {
-    prep = conn.prepareStatement(sql);
-    prep.setString(1, produto.getNome());
-    prep.setInt(2, produto.getValor());
-    prep.setString(3, produto.getStatus());
-    prep.execute();
-    prep.close();
-} catch (SQLException e) {
-    System.out.println("Erro ao cadastrar: " + e.getMessage());
-} finally {
     try {
-        if (conn != null) {
-            conn.close();
-        }
+        prep = conn.prepareStatement(sql);
+        prep.setString(1, produto.getNome());
+        prep.setInt(2, produto.getValor());
+        prep.setString(3, produto.getStatus());
+        prep.execute();
+        prep.close();
+        sucesso = true;
     } catch (SQLException e) {
-        System.out.println("Erro ao fechar conexão: " + e.getMessage());
-    }
+        
+    } finally {
+        try {
+            if (conn != null) {
+                conn.close();
+            }
+        } catch (SQLException e) {
+    System.err.println("Erro ao conectar ao banco:  " + e.getMessage());
 }
     }
+    return sucesso;
+}
     
     public ArrayList<ProdutosDTO> listarProdutos(){
         
